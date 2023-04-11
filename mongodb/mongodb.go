@@ -27,6 +27,7 @@ func NewMongoDBClient() (*MongoDBClient, error) {
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("Mongo DB connected")
 	// Ping the primary
 	if err := client.Ping(context.Background(), nil); err != nil {
 		return nil, err
