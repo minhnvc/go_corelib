@@ -10,14 +10,12 @@ import (
 
 var isLog bool
 var isLogDB bool
-var isDev bool
 
-func InitLogger() {
+func InitLogger(name string) {
 	//init log
-	pathLog := "/data/log/zaloanalytics-v2/zaloanalytics-v2.log"
-	if utils.GetConfig("ROOT_DOMAIN") == "localhost" {
-		isDev = true
-		pathLog = "za_analytics.log"
+	pathLog := "/data/log/" + name + "/" + name + ".log"
+	if utils.GetConfig("IS_LOCAL") == "true" {
+		pathLog = name + ".log"
 	}
 	logFile, err := os.OpenFile(pathLog, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err != nil {
@@ -30,9 +28,6 @@ func InitLogger() {
 }
 
 func PrintLn(category string, d ...interface{}) {
-	if !isDev && category == "dev" {
-		return
-	}
 	if isLog {
 		if category == "Mongo" && !isLogDB {
 			return
