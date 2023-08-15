@@ -28,7 +28,7 @@ func InitLogger(name string) {
 	isLogDB = utils.GetConfig("LOG_DB_CONSOLE") == "true"
 }
 
-func PrintLn(category string, d interface{}) {
+func PrintLn(category string, d any) {
 	if isLog {
 		if category == "Mongo" && !isLogDB {
 			return
@@ -37,7 +37,7 @@ func PrintLn(category string, d interface{}) {
 	}
 }
 
-func ErrorLn(message string, d ...interface{}) {
+func ErrorLn(message string, d ...any) {
 	msg := fmt.Sprintf(message, d...)
 	PrintLn("Error", msg)
 }
