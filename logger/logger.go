@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -37,7 +38,8 @@ func PrintLn(category string, d any) {
 	}
 }
 
-func ErrorLn(message string, d ...any) {
+func ErrorLn(message string, d ...any) error {
 	msg := fmt.Sprintf(message, d...)
 	PrintLn("Error", msg)
+	return errors.New(msg)
 }
