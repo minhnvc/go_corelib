@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"fmt"
 	"io"
 	"log"
 	"os"
@@ -27,11 +28,16 @@ func InitLogger(name string) {
 	isLogDB = utils.GetConfig("LOG_DB_CONSOLE") == "true"
 }
 
-func PrintLn(category string, d ...interface{}) {
+func PrintLn(category string, d interface{}) {
 	if isLog {
 		if category == "Mongo" && !isLogDB {
 			return
 		}
 		log.Println("["+category+"]", d)
 	}
+}
+
+func ErrorLn(message string, d ...interface{}) {
+	msg := fmt.Sprintf(message, d...)
+	PrintLn("Error", msg)
 }
