@@ -4,11 +4,16 @@ import (
 	"os"
 	"time"
 
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
 func GetCurrentUnix() int {
 	return int(time.Now().Unix())
+}
+
+func UUID() string {
+	return uuid.New().String()
 }
 
 func GetConfig(key string) string {
