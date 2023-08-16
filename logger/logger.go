@@ -43,3 +43,8 @@ func ErrorLn(message string, d ...any) error {
 	PrintLn("Error", msg)
 	return errors.New(msg)
 }
+
+func InfoLn(message string, d ...any) {
+	msg := fmt.Sprintf(message, d...)
+	PrintLn("Info", msg)
+}
