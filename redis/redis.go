@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/go-redis/cache/v8"
-	"github.com/go-redis/redis/v8"
-
+	"github.com/go-redis/cache/v9"
 	"github.com/minhnvc/go_corelib/utils"
+	"github.com/redis/go-redis/v9"
 )
 
 var ctx = context.Background()
@@ -27,7 +26,6 @@ func InitRedis() {
 	}
 	cdb = cache.New(&cache.Options{
 		Redis: rdb,
-		// LocalCache: cache.NewTinyLFU(50000, time.Minute),
 	})
 
 	fmt.Println("Redis", "Redis connected")
