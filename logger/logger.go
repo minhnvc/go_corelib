@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/minhnvc/go_corelib/utils"
 )
@@ -18,6 +19,15 @@ func InitLogger(name string) {
 	pathLog := "/data/log/" + name + "/" + name + ".log"
 	if utils.GetConfig("IS_LOCAL") == "true" {
 		pathLog = name + ".log"
+	} else {
+		folderPath := filepath.Dir(pathLog)
+		if _, err := os.Stat(folderPath); os.IsNotExist(err) {
+			err := os.MkdirAll(folderPath, 0755)
+			if err != nil {
+				log.Fatalf("Failed to create directory: %v", err)
+				return
+			}
+		}
 	}
 	logFile, err := os.OpenFile(pathLog, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	if err != nil {
