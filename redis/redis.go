@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/go-redis/cache/v9"
@@ -15,12 +16,18 @@ var rdb *redis.Client
 var cdb *cache.Cache
 
 func InitRedis() {
-	rdb = redis.NewClient(&redis.Options{
-		Addr:     utils.GetConfig("REDIS_URL"),
-		Password: utils.GetConfig("REDIS_PASSWORD"),
-		DB:       0, // use default DB,
-		PoolSize: 20,
+	//init redis
+	clusterUrl := strings.Split(utils.GetConfig("REDIS_URL"), ",")
+	rdb := redis.NewClusterClient(&redis.ClusterOptions{
+		Addrs:           clusterUrl,
+		PoolSize:        20,
+		MaxRetries:      2,
+		MinRetryBackoff: 8 * time.Millisecond,
+		MaxRetryBackoff: 512 * time.Millisecond,
+		DialTimeout:     3 * time.Second,                   // 3000 milliseconds, timeout config
+		Password:        utils.GetConfig("REDIS_PASSWORD"), // no username needed as per your config
 	})
+
 	if rdb == nil {
 		panic("Can't connect redis service")
 	}
@@ -28,7 +35,7 @@ func InitRedis() {
 		Redis: rdb,
 	})
 
-	fmt.Println("Redis", "Redis connected")
+	fmt.Println("Redis", "Redis cluster connected")
 }
 
 func Set(key string, value interface{}, duration time.Duration) {
