@@ -154,11 +154,11 @@ func FindOne(collection string, results interface{}, filter primitive.M) {
 		}
 	}
 }
-func Find(collection string, results interface{}, filter primitive.M) {
+func Find(collection string, results interface{}, filter primitive.M, opts ...*options.FindOptions) {
 	db, _ := NewMongoDBClient()
 	defer db.Close()
 
-	result, _ := db.GetCollection(collection).Find(context.Background(), filter)
+	result, _ := db.GetCollection(collection).Find(context.Background(), filter, opts...)
 	defer result.Close(context.Background())
 	if result != nil {
 		err := result.All(context.Background(), results)
